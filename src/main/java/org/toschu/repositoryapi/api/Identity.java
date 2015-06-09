@@ -7,7 +7,6 @@ package org.toschu.repositoryapi.api;
 
 import java.util.Objects;
 import java.util.UUID;
-import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Id;
 
 /**
@@ -16,15 +15,17 @@ import org.mongodb.morphia.annotations.Id;
  *
  * @author corbeau
  */
-@Embedded
 public abstract class Identity {
 
     @Id
     private String identitier;
 
-
     public Identity() {
         this.identitier = UUID.randomUUID().toString();
+    }
+
+    public Identity(String identitier) {
+        this.identitier = identitier;
     }
 
     public String getIdentitier() {
@@ -34,7 +35,6 @@ public abstract class Identity {
     public void setIdentitier(String identitier) {
         this.identitier = identitier;
     }
-
 
     @Override
     public int hashCode() {

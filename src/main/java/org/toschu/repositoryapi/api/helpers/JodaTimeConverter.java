@@ -5,17 +5,17 @@
  */
 package org.toschu.repositoryapi.api.helpers;
 
-import java.util.Locale;
+import java.util.Date;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.mongodb.morphia.converters.SimpleValueConverter;
 import org.mongodb.morphia.converters.TypeConverter;
 import org.mongodb.morphia.mapping.MappedField;
+import org.mongodb.morphia.mapping.MappingException;
 
 /**
  *
- * @author corbeau
+ * @author Eemuli
+ * @link{https://github.com/Eemuli}
  */
 public class JodaTimeConverter extends TypeConverter implements SimpleValueConverter {
 
@@ -24,17 +24,18 @@ public class JodaTimeConverter extends TypeConverter implements SimpleValueConve
     }
 
     @Override
-    public Object decode(Class<?> targetClass, Object fromDBObject, MappedField optionalExtraInfo) {
-        DateTime readed = null;
+    public Object decode(Class targetClass, Object fromDBObject, MappedField optionalExtraInfo) throws MappingException {
         if (fromDBObject == null) {
             return null;
-        } else if(fromDBObject instanceof String){
-            DateTimeFormatter dateTimeFormat
-                    = ISODateTimeFormat.dateTimeNoMillis()
-                    .withLocale(Locale.GERMANY);
-            readed = dateTimeFormat.parseDateTime((String) fromDBObject);
         }
-        return fromDBObject;
+
+        if (fromDBObject instanceof Date) {
+            Date d = (Date) fromDBObject;
+            return new DateTime(d.getTime());
+        }
+
+        throw new RuntimeException(
+                "Did not expect " + fromDBObject.getClass().getName());
     }
 
     @Override
@@ -47,9 +48,8 @@ public class JodaTimeConverter extends TypeConverter implements SimpleValueConve
             throw new RuntimeException(
                     "Did not expect " + value.getClass().getName());
         }
-        DateTimeFormatter dateTimeFormat
-                = ISODateTimeFormat.dateTimeNoMillis()
-                .withLocale(Locale.GERMANY);
-        return dateTimeFormat.print(((DateTime) value));
+
+        DateTime dateTime = (DateTime) value;
+        return dateTime.toDate();
     }
 }
