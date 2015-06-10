@@ -47,6 +47,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.mongoClient = mongoClient;
         this.morphia = morphia;
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
+        morphia.getMapper().getOptions().setStoreEmpties(true);
+        morphia.getMapper().getOptions().setStoreNulls(true);
         this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
         datastore.ensureIndexes();
     }
@@ -65,6 +67,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.mongoClient = new MongoClient(dbHost, dbPort);
         this.morphia = new Morphia().mapPackage(packageName);
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
+        morphia.getMapper().getOptions().setStoreEmpties(true);
+        morphia.getMapper().getOptions().setStoreNulls(true);
         this.datastore = morphia.createDatastore(this.mongoClient, packageName);
         datastore.ensureIndexes();
     }
@@ -79,6 +83,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.type = type;
         this.morphia = new Morphia().mapPackage(packageName);
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
+        morphia.getMapper().getOptions().setStoreEmpties(true);
+        morphia.getMapper().getOptions().setStoreNulls(true);
         this.mongoClient = new MongoClient(address);
         String databaseName = packageName.replaceAll("\\.", "");
         this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
@@ -97,6 +103,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.mongoClient = new MongoClient();
         this.morphia = new Morphia().mapPackage(packageName);
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
+        morphia.getMapper().getOptions().setStoreEmpties(true);
+        morphia.getMapper().getOptions().setStoreNulls(true);
         String databaseName = packageName.replaceAll("\\.", "");
         this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
         datastore.ensureIndexes();
@@ -115,6 +123,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.mongoClient = new MongoClient();
         this.morphia = new Morphia().mapPackage(packageName);
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
+        morphia.getMapper().getOptions().setStoreEmpties(true);
+        morphia.getMapper().getOptions().setStoreNulls(true);
         this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
         datastore.ensureIndexes();
     }
@@ -133,6 +143,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.mongoClient = new MongoClient(servers);
         this.morphia = new Morphia().mapPackage(packageName);
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
+        morphia.getMapper().getOptions().setStoreEmpties(true);
+        morphia.getMapper().getOptions().setStoreNulls(true);
         this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
         datastore.ensureIndexes();
     }
@@ -144,6 +156,7 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
      */
     @Override
     public Set<T> get() {
+        logger.info("Database communication");
         Query<T> dbresult = this.datastore.find(type);
         Set<T> result = new HashSet<>(dbresult.asList());
         return result;
