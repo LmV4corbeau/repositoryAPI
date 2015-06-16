@@ -17,13 +17,14 @@ import org.codehaus.jackson.map.ObjectMapper;
 /**
  *
  * @author corbeau
+ * @param <T>
  */
 public class JSONRepository<T extends Identity> implements Repository<T> {
 
     protected File targetFolder;
     protected Class<T> type;
     protected static Logger logger
-            = Logger.getLogger(JpaRepository.class.getSimpleName());
+            = Logger.getLogger(JSONRepository.class.getSimpleName());
 
     public JSONRepository(File targetFolder, Class<T> type) {
         this.targetFolder = targetFolder;
@@ -38,8 +39,10 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
                 if (currentChildren.getName().endsWith(type.getSimpleName())) {
                     try {
                         ObjectMapper objectMapper = new ObjectMapper();
-                        T loaded = objectMapper.readValue(currentChildren,
-                                type);
+                        T loaded = objectMapper.readValue(currentChildren, type);
+                        if (loaded != null) {
+                            result.add(loaded);
+                        }
                     } catch (IOException exception) {
                         logger.error("Can't load " + currentChildren.getName(), exception);
                     }
@@ -59,7 +62,7 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.writerWithDefaultPrettyPrinter()
-                        .writeValue(entityFile, type);
+                        .writeValue(entityFile, entity);
             } catch (IOException exception) {
                 logger.error("Can't load " + entity, exception);
             }

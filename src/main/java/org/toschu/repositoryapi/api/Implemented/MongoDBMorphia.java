@@ -7,6 +7,7 @@ package org.toschu.repositoryapi.api.Implemented;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.WriteResult;
 import org.toschu.repositoryapi.api.Repository;
 import org.toschu.repositoryapi.api.Identity;
 import java.net.UnknownHostException;
@@ -15,9 +16,11 @@ import java.util.List;
 import java.util.Set;
 import org.apache.log4j.Logger;
 import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateException;
+import org.mongodb.morphia.query.UpdateOperations;
 import org.toschu.repositoryapi.api.helpers.JodaTimeConverter;
 
 /**
@@ -164,7 +167,7 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
 
     /**
      * Persist an Entity of T, if the entity is already in the database, it will
-     * be updatet
+     * remove the old and add a the new own
      *
      * @param entity
      */
@@ -177,9 +180,13 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         for (T currentElement : elements) {
             if (currentElement.equals(entity)) {
                 try {
-                    logger.info("merged");
+                    logger.info("merging");
                     merged = true;
-                    this.datastore.merge(entity);
+                    WriteResult delete = this.datastore.delete(currentElement);
+                    logger.info(delete.toString());
+                    Key<T> save = this.datastore.save(entity);
+                    logger.info(save);
+                    logger.info("merged:\t" + merged);
                 } catch (UpdateException ue) {
                     if (!ue.getMessage().toLowerCase()
                             .equals("Nothing updated".toLowerCase())) {

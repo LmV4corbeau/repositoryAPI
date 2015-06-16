@@ -18,28 +18,28 @@ import org.mongodb.morphia.annotations.Id;
 public abstract class Identity {
 
     @Id
-    private String identitier;
+    private String identity;
 
     public Identity() {
-        this.identitier = UUID.randomUUID().toString();
+        this.identity = UUID.randomUUID().toString();
     }
 
     public Identity(String identitier) {
-        this.identitier = identitier;
+        this.identity = identitier;
     }
 
     public String getIdentitier() {
-        return identitier;
+        return identity;
     }
 
     public void setIdentitier(String identitier) {
-        this.identitier = identitier;
+        this.identity = identitier;
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.identitier);
+        hash = 37 * hash + Objects.hashCode(this.identity);
         return hash;
     }
 
@@ -52,7 +52,7 @@ public abstract class Identity {
             return false;
         }
         final Identity other = (Identity) obj;
-        if (!Objects.equals(this.identitier, other.identitier)) {
+        if (!Objects.equals(this.identity, other.identity)) {
             return false;
         }
         return true;
@@ -60,7 +60,7 @@ public abstract class Identity {
 
     @Override
     public String toString() {
-        return "Identity{" + "identitier=" + identitier + "}";
+        return "Identity{" + "identitier=" + identity + "}";
     }
 
 }
