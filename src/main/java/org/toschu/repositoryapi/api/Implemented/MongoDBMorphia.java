@@ -11,6 +11,7 @@ import com.mongodb.WriteResult;
 import org.toschu.repositoryapi.api.Repository;
 import org.toschu.repositoryapi.api.Identity;
 import java.net.UnknownHostException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,6 @@ import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateException;
-import org.mongodb.morphia.query.UpdateOperations;
 import org.toschu.repositoryapi.api.helpers.JodaTimeConverter;
 
 /**
@@ -36,6 +36,15 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
     protected MongoClient mongoClient;
     protected final Morphia morphia;
     protected final Datastore datastore;
+
+    public MongoDBMorphia(Class<T> type, MongoClient client,
+            Morphia morphia, Datastore datastore) {
+        this.type = type;
+        this.mongoClient = client;
+        this.morphia = morphia;
+        this.datastore = datastore;
+        this.datastore.ensureIndexes();
+    }
 
     /**
      * for more Configuration like Mongodbcluster or Morpiha with own Mapper
@@ -165,6 +174,16 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         return result;
     }
 
+    @Override
+    public void persist(Collection<T> entities) {
+        logger.info("persist mulktiple");
+        logger.info(entities);
+        Set<T> elements = get();
+        entities.stream().forEach((currentEntity) -> {
+            this.mergeEntity(currentEntity, elements);
+        });
+    }
+
     /**
      * Persist an Entity of T, if the entity is already in the database, it will
      * remove the old and add a the new own
@@ -176,6 +195,16 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         logger.info("persist single");
         logger.info(entity);
         Set<T> elements = get();
+        this.mergeEntity(entity, elements);
+    }
+
+    /**
+     * searchs existing Entity and replace them with the new own
+     *
+     * @param entity
+     * @param elements
+     */
+    private void mergeEntity(T entity, Set<T> elements) {
         boolean merged = false;
         for (T currentElement : elements) {
             if (currentElement.equals(entity)) {
@@ -212,6 +241,10 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
     @Override
     public void remove(T entity) {
         this.datastore.delete(entity);
+    }
+
+    public void closeConnection() {
+        this.mongoClient.close();
     }
 
 }

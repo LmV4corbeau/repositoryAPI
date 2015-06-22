@@ -82,6 +82,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
+                            <mainClass>org.toschu.repositoryapi.example.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

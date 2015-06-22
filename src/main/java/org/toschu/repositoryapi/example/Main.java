@@ -2,7 +2,6 @@ package org.toschu.repositoryapi.example;
 
 import java.util.LinkedList;
 import java.util.List;
-import org.joda.time.Period;
 import org.toschu.repositoryapi.api.Implemented.MongoDBMorphia;
 import org.toschu.repositoryapi.api.Repository;
 
@@ -28,7 +27,11 @@ public class Main {
             PersonRepo.persist(tom);
             List<Person> loaded = new LinkedList<>(PersonRepo.get());
             System.out.println(loaded);
-            
+            for (int i = 0; i < 1000; i++) {
+                List<Person> cloaded = new LinkedList<>(PersonRepo.get());
+                System.out.println(cloaded);
+                PersonRepo.persist(cloaded);
+            }
         } catch (Exception e) {
             System.err.println(e);
         }
