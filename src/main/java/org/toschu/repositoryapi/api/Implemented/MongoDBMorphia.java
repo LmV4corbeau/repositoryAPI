@@ -34,17 +34,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
             = Logger.getLogger(MongoDBMorphia.class.getSimpleName());
     protected Class<T> type;
     protected MongoClient mongoClient;
-    protected final Morphia morphia;
-    protected final Datastore datastore;
-
-    public MongoDBMorphia(Class<T> type, MongoClient client,
-            Morphia morphia, Datastore datastore) {
-        this.type = type;
-        this.mongoClient = client;
-        this.morphia = morphia;
-        this.datastore = datastore;
-        this.datastore.ensureIndexes();
-    }
+    protected Morphia morphia;
+    protected String databaseName;
 
     /**
      * for more Configuration like Mongodbcluster or Morpiha with own Mapper
@@ -58,11 +49,9 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.type = type;
         this.mongoClient = mongoClient;
         this.morphia = morphia;
-        this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
+        this.databaseName = databaseName;
         morphia.getMapper().getOptions().setStoreEmpties(true);
         morphia.getMapper().getOptions().setStoreNulls(true);
-        this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
-        datastore.ensureIndexes();
     }
 
     /**
@@ -81,8 +70,7 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
         morphia.getMapper().getOptions().setStoreEmpties(true);
         morphia.getMapper().getOptions().setStoreNulls(true);
-        this.datastore = morphia.createDatastore(this.mongoClient, packageName);
-        datastore.ensureIndexes();
+        this.databaseName = packageName;
     }
 
     /**
@@ -98,9 +86,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         morphia.getMapper().getOptions().setStoreEmpties(true);
         morphia.getMapper().getOptions().setStoreNulls(true);
         this.mongoClient = new MongoClient(address);
-        String databaseName = packageName.replaceAll("\\.", "");
-        this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
-        datastore.ensureIndexes();
+        String tmpdatabaseName = packageName.replaceAll("\\.", "");
+        this.databaseName = tmpdatabaseName;
     }
 
     /**
@@ -117,9 +104,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
         morphia.getMapper().getOptions().setStoreEmpties(true);
         morphia.getMapper().getOptions().setStoreNulls(true);
-        String databaseName = packageName.replaceAll("\\.", "");
-        this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
-        datastore.ensureIndexes();
+        String tmpdatabaseName = packageName.replaceAll("\\.", "");
+        this.databaseName = tmpdatabaseName;
     }
 
     /**
@@ -137,8 +123,7 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
         morphia.getMapper().getOptions().setStoreEmpties(true);
         morphia.getMapper().getOptions().setStoreNulls(true);
-        this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
-        datastore.ensureIndexes();
+        this.databaseName = databaseName;
     }
 
     /**
@@ -157,8 +142,14 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         this.morphia.getMapper().getConverters().addConverter(new JodaTimeConverter());
         morphia.getMapper().getOptions().setStoreEmpties(true);
         morphia.getMapper().getOptions().setStoreNulls(true);
-        this.datastore = morphia.createDatastore(this.mongoClient, databaseName);
+        this.databaseName = databaseName;
+
+    }
+
+    protected Datastore createDataStore(String databaseName) {
+        Datastore datastore = morphia.createDatastore(this.mongoClient, databaseName);
         datastore.ensureIndexes();
+        return datastore;
     }
 
     /**
@@ -169,8 +160,10 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
     @Override
     public Set<T> get() {
         logger.info("Database communication");
-        Query<T> dbresult = this.datastore.find(type);
+        Datastore datastore = createDataStore(databaseName);
+        Query<T> dbresult = datastore.find(type);
         Set<T> result = new HashSet<>(dbresult.asList());
+        //dbresult.enableCursorTimeout()
         return result;
     }
 
@@ -206,14 +199,15 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
      */
     private void mergeEntity(T entity, Set<T> elements) {
         boolean merged = false;
+        Datastore datastore = createDataStore(databaseName);
         for (T currentElement : elements) {
             if (currentElement.equals(entity)) {
                 try {
                     logger.info("merging");
                     merged = true;
-                    WriteResult delete = this.datastore.delete(currentElement);
+                    WriteResult delete = datastore.delete(currentElement);
                     logger.info(delete.toString());
-                    Key<T> save = this.datastore.save(entity);
+                    Key<T> save = datastore.save(entity);
                     logger.info(save);
                     logger.info("merged:\t" + merged);
                 } catch (UpdateException ue) {
@@ -221,15 +215,13 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
                             .equals("Nothing updated".toLowerCase())) {
                         throw ue;
                     }
-                } catch (Exception e) {
-                    throw e;
                 }
             } else {
             }
         }
         if (!merged) {
             logger.info("new Entity");
-            this.datastore.save(entity);
+            datastore.save(entity);
         }
     }
 
@@ -240,7 +232,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
      */
     @Override
     public void remove(T entity) {
-        this.datastore.delete(entity);
+        Datastore datastore = createDataStore(databaseName);
+        datastore.delete(entity);
     }
 
     public void closeConnection() {
