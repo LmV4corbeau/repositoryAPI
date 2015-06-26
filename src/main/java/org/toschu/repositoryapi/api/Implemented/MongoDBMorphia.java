@@ -163,7 +163,7 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         Datastore datastore = createDataStore(databaseName);
         Query<T> dbresult = datastore.find(type);
         Set<T> result = new HashSet<>(dbresult.asList());
-        //dbresult.enableCursorTimeout()
+        
         return result;
     }
 
