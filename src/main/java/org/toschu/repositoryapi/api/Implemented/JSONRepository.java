@@ -11,8 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -24,7 +25,7 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
     protected File targetFolder;
     protected Class<T> type;
     protected static Logger logger
-            = Logger.getLogger(JSONRepository.class.getSimpleName());
+            = LoggerFactory.getLogger(JSONRepository.class.getSimpleName());
 
     public JSONRepository(File targetFolder, Class<T> type) {
         this.targetFolder = targetFolder;
