@@ -15,13 +15,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.log4j.Logger;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.toschu.repositoryapi.api.helpers.JodaTimeConverter;
 
 /**
@@ -32,7 +31,7 @@ import org.toschu.repositoryapi.api.helpers.JodaTimeConverter;
 public class MongoDBMorphia<T extends Identity> implements Repository<T> {
 
     protected static Logger logger
-            = LoggerFactory.getLogger(MongoDBMorphia.class.getSimpleName());
+            = Logger.getLogger(MongoDBMorphia.class.getSimpleName());
     protected Class<T> type;
     protected MongoClient mongoClient;
     protected Morphia morphia;
@@ -164,14 +163,14 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
         Datastore datastore = createDataStore(databaseName);
         Query<T> dbresult = datastore.find(type);
         Set<T> result = new HashSet<>(dbresult.asList());
-
+        
         return result;
     }
 
     @Override
     public void persist(Collection<T> entities) {
         logger.info("persist mulktiple");
-        logger.info("Entities:\t", entities);
+        logger.info(entities);
         Set<T> elements = get();
         entities.stream().forEach((currentEntity) -> {
             this.mergeEntity(currentEntity, elements);
@@ -187,7 +186,7 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
     @Override
     public void persist(T entity) {
         logger.info("persist single");
-        logger.info("Entities:\t", entity);
+        logger.info(entity);
         Set<T> elements = get();
         this.mergeEntity(entity, elements);
     }
@@ -209,7 +208,7 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
                     WriteResult delete = datastore.delete(currentElement);
                     logger.info(delete.toString());
                     Key<T> save = datastore.save(entity);
-                    logger.info("Savequery", save);
+                    logger.info(save);
                     logger.info("merged:\t" + merged);
                 } catch (UpdateException ue) {
                     if (!ue.getMessage().toLowerCase()
