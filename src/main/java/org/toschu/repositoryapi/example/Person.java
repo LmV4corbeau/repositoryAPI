@@ -104,7 +104,9 @@ public class Person extends Identity {
 
     @Override
     public String toString() {
-        return "Person{" + "name=" + name + ", surname=" + surname + ", hobbys=" + hobbys + ", adress=" + adress + '}';
+        return "Person{" + "name=" + name + 
+                ", surname=" + surname + 
+                ", hobbys=" + hobbys + 
+                ", adress=" + adress + '}';
     }
-
 }

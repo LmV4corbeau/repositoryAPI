@@ -9,10 +9,17 @@ import org.toschu.repositoryapi.api.Repository;
 import org.toschu.repositoryapi.api.Identity;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import java.util.function.Consumer;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.toschu.repositoryapi.api.helpers.JSONRepositoryFileFilter;
 
 /**
  *
@@ -24,29 +31,21 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
     protected File targetFolder;
     protected Class<T> type;
     protected static Logger logger
-            = Logger.getLogger(JSONRepository.class.getSimpleName());
+            = LoggerFactory.getLogger(JSONRepository.class.getSimpleName());
+    protected JSONRepositoryFileFilter fileFilter;
 
     public JSONRepository(File targetFolder, Class<T> type) {
         this.targetFolder = targetFolder;
         this.type = type;
+        this.fileFilter = new JSONRepositoryFileFilter(type);
     }
 
     @Override
     public Set<T> get() {
         Set<T> result = new HashSet<>();
         if (targetFolder != null) {
-            for (File currentChildren : targetFolder.listFiles()) {
-                if (currentChildren.getName().endsWith(type.getSimpleName())) {
-                    try {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        T loaded = objectMapper.readValue(currentChildren, type);
-                        if (loaded != null) {
-                            result.add(loaded);
-                        }
-                    } catch (IOException exception) {
-                        logger.error("Can't load " + currentChildren.getName(), exception);
-                    }
-                }
+            for (File currentChildren : targetFolder.listFiles(this.fileFilter)) {
+
             }
         }
         return result;
@@ -67,7 +66,6 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
                 logger.error("Can't load " + entity, exception);
             }
         }
-
     }
 
     @Override
@@ -82,6 +80,17 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
                 }
             }
         }
+    }
+
+    public T parseJSONFileToObject(File jsonFile, Class<T> type) {
+        T loaded = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            loaded = objectMapper.readValue(jsonFile, type);
+        } catch (IOException exception) {
+            logger.error("Can't load " + jsonFile.getName(), exception);
+        }
+        return loaded;
     }
 
 }
