@@ -2,6 +2,8 @@ package org.toschu.repositoryapi.example;
 
 import java.util.LinkedList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.toschu.repositoryapi.api.Implemented.MongoDBMorphia;
 import org.toschu.repositoryapi.api.Repository;
 
@@ -10,6 +12,9 @@ import org.toschu.repositoryapi.api.Repository;
  * @author corbeau
  */
 public class Main {
+
+    private Logger logger
+            = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
         List<Person> persons = new LinkedList<>();

@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
  * @param <T>
  */
 public interface Repository<T extends Identity> {
+
+    Logger logger
+            = LoggerFactory.getLogger(Repository.class);
 
     default Optional<T> get(String id) {
         return get()

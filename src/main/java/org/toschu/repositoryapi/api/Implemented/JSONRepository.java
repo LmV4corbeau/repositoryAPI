@@ -9,13 +9,8 @@ import org.toschu.repositoryapi.api.Repository;
 import org.toschu.repositoryapi.api.Identity;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +31,9 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
 
     public JSONRepository(File targetFolder, Class<T> type) {
         this.targetFolder = targetFolder;
+        if (!this.targetFolder.exists()) {
+            this.targetFolder.mkdirs();
+        }
         this.type = type;
         this.fileFilter = new JSONRepositoryFileFilter(type);
     }
@@ -45,7 +43,16 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
         Set<T> result = new HashSet<>();
         if (targetFolder != null) {
             for (File currentChildren : targetFolder.listFiles(this.fileFilter)) {
-
+                if (currentChildren.getName()
+                        .endsWith(type.getClass().getSimpleName())) {
+                    try {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        T entity = objectMapper.readValue(currentChildren, type);
+                        result.add(entity);
+                    } catch (IOException exception) {
+                        logger.error("Can't load " + currentChildren.getName(), exception);
+                    }
+                }
             }
         }
         return result;
@@ -56,14 +63,17 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
         if (targetFolder != null) {
             File entityFile
                     = new File(targetFolder,
-                            entity.getIdentitier() + "."
-                            + entity.getClass().getSimpleName());
+                            createFilename(entity)
+                    );
             try {
+                if (!entityFile.exists()) {
+                    entityFile.createNewFile();
+                }
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.writerWithDefaultPrettyPrinter()
                         .writeValue(entityFile, entity);
             } catch (IOException exception) {
-                logger.error("Can't load " + entity, exception);
+                logger.error("Can't save " + entity, exception);
             }
         }
     }
@@ -71,8 +81,7 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
     @Override
     public void remove(T entity) {
         if (targetFolder != null) {
-            String entityFileName
-                    = entity.getIdentitier() + "." + entity.getClass().getSimpleName();
+            String entityFileName = createFilename(entity);
             Set<File> deletes = new HashSet<>();
             for (File currentFile : targetFolder.listFiles()) {
                 if (currentFile.getName().toLowerCase().equals(entityFileName)) {
@@ -93,4 +102,8 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
         return loaded;
     }
 
+    public String createFilename(T entity) {
+        return entity.getIdentitier() + "."
+                + type.getSimpleName();
+    }
 }

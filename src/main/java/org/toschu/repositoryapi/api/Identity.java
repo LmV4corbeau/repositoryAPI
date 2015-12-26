@@ -7,6 +7,8 @@ package org.toschu.repositoryapi.api;
 
 import java.util.Objects;
 import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import org.mongodb.morphia.annotations.Id;
 
 /**
@@ -15,6 +17,7 @@ import org.mongodb.morphia.annotations.Id;
  *
  * @author corbeau
  */
+@MappedSuperclass
 public abstract class Identity {
 
     @Id
