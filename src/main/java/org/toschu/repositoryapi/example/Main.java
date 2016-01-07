@@ -13,16 +13,20 @@ import org.toschu.repositoryapi.api.Repository;
  */
 public class Main {
 
-    private Logger logger
+    private static Logger logger
             = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
+        logger.info("Test beginnt");
         List<Person> persons = new LinkedList<>();
         List<String> hobby = new LinkedList<>();
+         logger.info("Test beginnt");
         hobby.add("programmieren");
         hobby.add("bogenschießen");
+         logger.info("Test beginnt");
         Adress tomsAdress = new Adress("ReichenhainerMühlberg", "09125", "73", "Germany", "Sachsen");
         Person tom = new Person("Tom", "Schumann", hobby, tomsAdress);
+        logger.debug(tom.toString());
         try {
             Repository<Person> PersonRepo
                     = new MongoDBMorphia<>(Person.class, "org.toschu", "RepositoryTest");

@@ -1,0 +1,44 @@
+12:10:42.836 [main] INFO  org.toschu.repositoryapi.example.Main - Test beginnt
+12:10:42.843 [main] INFO  org.toschu.repositoryapi.example.Main - Test beginnt
+12:10:42.843 [main] INFO  org.toschu.repositoryapi.example.Main - Test beginnt
+12:10:42.855 [main] DEBUG org.toschu.repositoryapi.example.Main - Person{name=Tom, surname=Schumann, hobbys=[programmieren, bogenschießen], adress=Adress{street=ReichenhainerMühlberg, zipCode=09125, housNumber=73, country=Germany, fedralState=Sachsen}}
+12:10:42.923 [main] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[127.0.0.1:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+12:10:42.980 [main] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=127.0.0.1:27017, type=UNKNOWN, state=CONNECTING}]
+12:10:43.023 [cluster-ClusterId{value='568e47b2e29a171aa526d0d4', description='null'}-127.0.0.1:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:11}] to 127.0.0.1:27017
+12:10:43.024 [cluster-ClusterId{value='568e47b2e29a171aa526d0d4', description='null'}-127.0.0.1:27017] DEBUG org.mongodb.driver.cluster - Checking status of 127.0.0.1:27017
+12:10:43.027 [cluster-ClusterId{value='568e47b2e29a171aa526d0d4', description='null'}-127.0.0.1:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=127.0.0.1:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[2, 6, 10]}, minWireVersion=0, maxWireVersion=2, electionId=null, maxDocumentSize=16777216, roundTripTimeNanos=763398}
+12:10:43.029 [cluster-ClusterId{value='568e47b2e29a171aa526d0d4', description='null'}-127.0.0.1:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=127.0.0.1:27017, type=STANDALONE, roundTripTime=0,8 ms, state=CONNECTED}]
+12:10:43.064 [main] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[127.0.0.1:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+12:10:43.065 [main] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=127.0.0.1:27017, type=UNKNOWN, state=CONNECTING}]
+12:10:43.067 [main] INFO  MongoDBMorphia - persist single
+12:10:43.067 [main] INFO  MongoDBMorphia - Database communication
+12:10:43.068 [cluster-ClusterId{value='568e47b3e29a171aa526d0d5', description='null'}-127.0.0.1:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:12}] to 127.0.0.1:27017
+12:10:43.069 [cluster-ClusterId{value='568e47b3e29a171aa526d0d5', description='null'}-127.0.0.1:27017] DEBUG org.mongodb.driver.cluster - Checking status of 127.0.0.1:27017
+12:10:43.070 [cluster-ClusterId{value='568e47b3e29a171aa526d0d5', description='null'}-127.0.0.1:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=127.0.0.1:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[2, 6, 10]}, minWireVersion=0, maxWireVersion=2, electionId=null, maxDocumentSize=16777216, roundTripTimeNanos=662752}
+12:10:43.071 [cluster-ClusterId{value='568e47b3e29a171aa526d0d5', description='null'}-127.0.0.1:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=127.0.0.1:27017, type=STANDALONE, roundTripTime=0,7 ms, state=CONNECTED}]
+12:10:43.110 [main] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:13}] to 127.0.0.1:27017
+12:10:43.113 [main] DEBUG org.mongodb.driver.protocol.query - Sending query of namespace RepositoryTest.Adress on connection [connectionId{localValue:3, serverValue:13}] to server 127.0.0.1:27017
+12:10:43.122 [main] DEBUG org.mongodb.driver.protocol.query - Query completed
+12:10:43.125 [main] INFO  MongoDBMorphia - merging
+12:14:53.122 [main] INFO  org.toschu.repositoryapi.example.Main - Test beginnt
+12:14:53.130 [main] INFO  org.toschu.repositoryapi.example.Main - Test beginnt
+12:14:53.130 [main] INFO  org.toschu.repositoryapi.example.Main - Test beginnt
+12:14:53.141 [main] DEBUG org.toschu.repositoryapi.example.Main - Person{name=Tom, surname=Schumann, hobbys=[programmieren, bogenschießen], adress=Adress{street=ReichenhainerMühlberg, zipCode=09125, housNumber=73, country=Germany, fedralState=Sachsen}}
+12:14:53.212 [main] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[127.0.0.1:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+12:14:53.273 [main] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=127.0.0.1:27017, type=UNKNOWN, state=CONNECTING}]
+12:14:53.302 [cluster-ClusterId{value='568e48ade29a171c0f82346e', description='null'}-127.0.0.1:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:14}] to 127.0.0.1:27017
+12:14:53.303 [cluster-ClusterId{value='568e48ade29a171c0f82346e', description='null'}-127.0.0.1:27017] DEBUG org.mongodb.driver.cluster - Checking status of 127.0.0.1:27017
+12:14:53.304 [cluster-ClusterId{value='568e48ade29a171c0f82346e', description='null'}-127.0.0.1:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=127.0.0.1:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[2, 6, 10]}, minWireVersion=0, maxWireVersion=2, electionId=null, maxDocumentSize=16777216, roundTripTimeNanos=500804}
+12:14:53.306 [cluster-ClusterId{value='568e48ade29a171c0f82346e', description='null'}-127.0.0.1:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=127.0.0.1:27017, type=STANDALONE, roundTripTime=0,5 ms, state=CONNECTED}]
+12:14:53.344 [main] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[127.0.0.1:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+12:14:53.345 [main] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=127.0.0.1:27017, type=UNKNOWN, state=CONNECTING}]
+12:14:53.346 [main] INFO  MongoDBMorphia - persist single
+12:14:53.347 [main] INFO  MongoDBMorphia - Database communication
+12:14:53.349 [cluster-ClusterId{value='568e48ade29a171c0f82346f', description='null'}-127.0.0.1:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:15}] to 127.0.0.1:27017
+12:14:53.349 [cluster-ClusterId{value='568e48ade29a171c0f82346f', description='null'}-127.0.0.1:27017] DEBUG org.mongodb.driver.cluster - Checking status of 127.0.0.1:27017
+12:14:53.351 [cluster-ClusterId{value='568e48ade29a171c0f82346f', description='null'}-127.0.0.1:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=127.0.0.1:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[2, 6, 10]}, minWireVersion=0, maxWireVersion=2, electionId=null, maxDocumentSize=16777216, roundTripTimeNanos=625522}
+12:14:53.351 [cluster-ClusterId{value='568e48ade29a171c0f82346f', description='null'}-127.0.0.1:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=127.0.0.1:27017, type=STANDALONE, roundTripTime=0,6 ms, state=CONNECTED}]
+12:14:53.388 [main] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:16}] to 127.0.0.1:27017
+12:14:53.392 [main] DEBUG org.mongodb.driver.protocol.query - Sending query of namespace RepositoryTest.Adress on connection [connectionId{localValue:3, serverValue:16}] to server 127.0.0.1:27017
+12:14:53.401 [main] DEBUG org.mongodb.driver.protocol.query - Query completed
+12:14:53.403 [main] INFO  MongoDBMorphia - merging
