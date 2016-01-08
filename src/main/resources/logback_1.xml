@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="30 seconds">
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
         by default -->
         <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSSSSSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
-    
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${user.dir}/logs/repositoryapi.log</file>
+        <file>${user.dir}/logs/jssp.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover. Make sure the path matches the one in the file element or else
             the rollover logs are placed in the working directory. -->
-            <fileNamePattern>${user.dir}/logs/repositoryapi.log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${user.dir}/logs/jssp.log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>50MB</maxFileSize>
+                <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!-- keep 5 days' worth of history -->
             <maxHistory>5</maxHistory>
@@ -26,35 +25,10 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
-    
-    <appender name="HTML" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <charset>UTF-8</charset>
-            <layout class="ch.qos.logback.classic.html.HTMLLayout">
-                <pattern>%relative%thread%mdc%level%logger%msg</pattern>
-            </layout>
-        </encoder>
-        <file>${user.dir}/logs/repositoryapi.html</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- daily rollover. Make sure the path matches the one in the file element or else
-            the rollover logs are placed in the working directory. -->
-            <fileNamePattern>${user.dir}/logs/repositoryapi.log_%d{yyyy-MM-dd}.%i.html</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>50MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <!-- keep 5 days' worth of history -->
-            <maxHistory>5</maxHistory>
-        </rollingPolicy>
-    </appender>
-    
     <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
         <syslogHost>localhost</syslogHost>
         <facility>USER</facility>
         <suffixPattern>[%thread] %logger %msg</suffixPattern>
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
-        </encoder>
     </appender>
     
     <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
@@ -67,13 +41,10 @@
         <sqlDialect class="ch.qos.logback.core.db.dialect.MsSQLDialect"/>
     </appender>
 
-    <root level="DEBUG">
+    <root level="ALL">
+        <!--<appender-ref ref="SYSLOG"/>-->
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
-        <!--
-        <appender-ref ref="HTML"/>
-        <appender-ref ref="SYSLOG"/>
         <appender-ref ref="DB"/>
-        -->
     </root>
 </configuration>
