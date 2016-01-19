@@ -5,19 +5,15 @@
  */
 package org.toschu.repositoryapi.api.Implemented;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.toschu.repositoryapi.api.Repository;
 import org.toschu.repositoryapi.api.Identity;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.toschu.repositoryapi.api.helpers.json.JSONPrivatekeySeriazlizer;
-import org.toschu.repositoryapi.api.helpers.json.JSONPublickeySeriazlizer;
 import org.toschu.repositoryapi.api.helpers.json.JSONRepositoryFileFilter;
 
 /**
@@ -117,15 +113,6 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
     public ObjectMapper getObjectMapper() {
         if (this.objectMapper == null) {
             this.objectMapper = new ObjectMapper();
-            SimpleModule privateKeyModule = new SimpleModule("PrivatKeyModule",
-                    new Version(1, 0, 0, null));
-            privateKeyModule.addSerializer(new JSONPrivatekeySeriazlizer());
-            SimpleModule publicKeyModule = new SimpleModule("PrivatKeyModule",
-                    new Version(1, 0, 0, null));
-            publicKeyModule.addSerializer(new JSONPublickeySeriazlizer());
-            objectMapper.registerModule(publicKeyModule);
-            objectMapper.registerModule(privateKeyModule);
-
         }
         return this.objectMapper;
     }
