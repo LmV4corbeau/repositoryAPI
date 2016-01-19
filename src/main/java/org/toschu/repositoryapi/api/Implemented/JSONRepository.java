@@ -11,10 +11,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.module.SimpleModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.toschu.repositoryapi.api.helpers.JSONRepositoryFileFilter;
+import org.toschu.repositoryapi.api.helpers.json.JSONPrivatekeySeriazlizer;
+import org.toschu.repositoryapi.api.helpers.json.JSONPublickeySeriazlizer;
+import org.toschu.repositoryapi.api.helpers.json.JSONRepositoryFileFilter;
 
 /**
  *
@@ -28,6 +32,7 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
     protected static Logger logger
             = LoggerFactory.getLogger(JSONRepository.class.getSimpleName());
     protected JSONRepositoryFileFilter fileFilter;
+    protected ObjectMapper objectMapper;
 
     public JSONRepository(File targetFolder, Class<T> type) {
         this.targetFolder = targetFolder;
@@ -36,6 +41,8 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
         }
         this.type = type;
         this.fileFilter = new JSONRepositoryFileFilter(type);
+        this.objectMapper = getObjectMapper();
+
     }
 
     @Override
@@ -46,7 +53,7 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
                 if (currentChildren.getName()
                         .endsWith(type.getClass().getSimpleName())) {
                     try {
-                        ObjectMapper objectMapper = new ObjectMapper();
+                        ObjectMapper objectMapper = getObjectMapper();
                         T entity = objectMapper.readValue(currentChildren, type);
                         result.add(entity);
                     } catch (IOException exception) {
@@ -69,7 +76,7 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
                 if (!entityFile.exists()) {
                     entityFile.createNewFile();
                 }
-                ObjectMapper objectMapper = new ObjectMapper();
+                ObjectMapper objectMapper = getObjectMapper();
                 objectMapper.writerWithDefaultPrettyPrinter()
                         .writeValue(entityFile, entity);
             } catch (IOException exception) {
@@ -94,7 +101,7 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
     public T parseJSONFileToObject(File jsonFile, Class<T> type) {
         T loaded = null;
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectMapper objectMapper = getObjectMapper();
             loaded = objectMapper.readValue(jsonFile, type);
         } catch (IOException exception) {
             logger.error("Can't load " + jsonFile.getName(), exception);
@@ -105,5 +112,21 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
     public String createFilename(T entity) {
         return entity.getIdentitier() + "."
                 + type.getSimpleName();
+    }
+
+    public ObjectMapper getObjectMapper() {
+        if (this.objectMapper == null) {
+            this.objectMapper = new ObjectMapper();
+            SimpleModule privateKeyModule = new SimpleModule("PrivatKeyModule",
+                    new Version(1, 0, 0, null));
+            privateKeyModule.addSerializer(new JSONPrivatekeySeriazlizer());
+            SimpleModule publicKeyModule = new SimpleModule("PrivatKeyModule",
+                    new Version(1, 0, 0, null));
+            publicKeyModule.addSerializer(new JSONPublickeySeriazlizer());
+            objectMapper.registerModule(publicKeyModule);
+            objectMapper.registerModule(privateKeyModule);
+
+        }
+        return this.objectMapper;
     }
 }

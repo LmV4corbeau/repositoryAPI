@@ -5,8 +5,7 @@
  */
 package org.toschu.repositoryapi.api.helpers;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+
 import org.joda.time.Period;
 import org.mongodb.morphia.converters.SimpleValueConverter;
 import org.mongodb.morphia.converters.TypeConverter;

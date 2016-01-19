@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.toschu.repositoryapi.api.helpers;
+package org.toschu.repositoryapi.api.helpers.json;
 
 import java.io.File;
 import java.io.FileFilter;
