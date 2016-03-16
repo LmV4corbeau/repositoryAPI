@@ -7,6 +7,7 @@ package org.toschu.repositoryapi.example;
 
 import java.util.List;
 import java.util.Objects;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Reference;
 import org.toschu.repositoryapi.api.Identity;
@@ -22,7 +23,7 @@ public class Person extends Identity {
     private String surname;
     private List<String> hobbys;
 
-    @Reference
+    @Embedded
     private Adress adress;
 
     public Person() {

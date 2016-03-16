@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Id;
+import org.bson.types.ObjectId;
 
 /**
  * Identity class. Every Class how want's to stored with repositoringApi has zu
@@ -16,9 +17,10 @@ import javax.persistence.Id;
  *
  * @author corbeau
  */
-
 @MappedSuperclass
 public abstract class Identity {
+
+    private ObjectId _id;
 
     @Id
     private String identity;
@@ -37,6 +39,14 @@ public abstract class Identity {
 
     public void setIdentitier(String identitier) {
         this.identity = identitier;
+    }
+
+    public ObjectId getRasperryPiId() {
+        return _id;
+    }
+
+    public void setId(ObjectId _id) {
+        this._id = _id;
     }
 
     @Override
