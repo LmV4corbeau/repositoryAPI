@@ -26,12 +26,19 @@ import java.util.function.Predicate;
 public class JpaRepository<T extends Identity> implements Repository<T> {
 
     protected EntityManagerFactory emf;
-
+    protected String persistenceUnitName;
     protected Class<T> type;
 
     public JpaRepository(Class<T> type, String persistenceUnitName) {
         this.type = type;
+        this.persistenceUnitName = persistenceUnitName;
         emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+    }
+
+    public JpaRepository(EntityManagerFactory emf, Class<T> type, String persistenceUnitName) {
+        this.emf = emf;
+        this.persistenceUnitName = persistenceUnitName;
+        this.type = type;
     }
 
     @Override
@@ -73,7 +80,7 @@ public class JpaRepository<T extends Identity> implements Repository<T> {
 
     @Override
     public void remove(T entity) {
-        remove(entity.getIdentitier());
+        remove(entity.getIdentity());
     }
 
     @Override
@@ -91,7 +98,7 @@ public class JpaRepository<T extends Identity> implements Repository<T> {
         runInTransaction(entityManager -> {
             entities
                     .stream()
-                    .map(Identity::getIdentitier)
+                    .map(Identity::getIdentity)
                     .map(id -> entityManager.find(type, id))
                     .filter(Objects::nonNull)
                     .forEach(entityManager::remove);

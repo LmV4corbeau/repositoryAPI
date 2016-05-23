@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="30 seconds">
+    
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
-        by default -->
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
@@ -12,13 +11,10 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.dir}/logs/repositoryapi.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- daily rollover. Make sure the path matches the one in the file element or else
-            the rollover logs are placed in the working directory. -->
             <fileNamePattern>${user.dir}/logs/repositoryapi.log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>50MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <!-- keep 5 days' worth of history -->
             <maxHistory>5</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -26,7 +22,7 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
-    
+    <!--
     <appender name="HTML" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <charset>UTF-8</charset>
@@ -36,13 +32,10 @@
         </encoder>
         <file>${user.dir}/logs/repositoryapi.html</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- daily rollover. Make sure the path matches the one in the file element or else
-            the rollover logs are placed in the working directory. -->
             <fileNamePattern>${user.dir}/logs/repositoryapi.log_%d{yyyy-MM-dd}.%i.html</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>50MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <!-- keep 5 days' worth of history -->
             <maxHistory>5</maxHistory>
         </rollingPolicy>
     </appender>
@@ -57,19 +50,20 @@
         </encoder>
     </appender>
     
-    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
-        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
-            <driverClass>com.mysql.jdbc.Driver</driverClass>
-            <url>jdbc:mysql://127.0.0.1:3306/JavaLogs</url>
-            <user>javalog</user>
-            <password>javalog@0915</password>
-        </connectionSource>
-        <sqlDialect class="ch.qos.logback.core.db.dialect.MsSQLDialect"/>
-    </appender>
-
+        <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+            <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+                <driverClass>com.mysql.jdbc.Driver</driverClass>
+                <url>jdbc:mysql://127.0.0.1:3306/JavaLogs</url>
+                <user>javalog</user>
+                <password>javalog@0915</password>
+            </connectionSource>
+            <sqlDialect class="ch.qos.logback.core.db.dialect.MsSQLDialect"/>
+        </appender>
+    -->
     <root level="DEBUG">
+        
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="FILE"/>        
         <!--
         <appender-ref ref="HTML"/>
         <appender-ref ref="SYSLOG"/>

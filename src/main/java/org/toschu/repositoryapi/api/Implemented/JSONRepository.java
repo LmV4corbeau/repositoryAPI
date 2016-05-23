@@ -106,7 +106,7 @@ public class JSONRepository<T extends Identity> implements Repository<T> {
     }
 
     public String createFilename(T entity) {
-        return entity.getIdentitier() + "."
+        return entity.getIdentity() + "."
                 + type.getSimpleName();
     }
 

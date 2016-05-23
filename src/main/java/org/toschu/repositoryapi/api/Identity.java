@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Id;
-import org.bson.types.ObjectId;
 
 /**
  * Identity class. Every Class how want's to stored with repositoringApi has zu
@@ -20,10 +19,8 @@ import org.bson.types.ObjectId;
 @MappedSuperclass
 public abstract class Identity {
 
-    private ObjectId _id;
-
     @Id
-    private String identity;
+    private final String identity;
 
     public Identity() {
         this.identity = UUID.randomUUID().toString();
@@ -33,47 +30,34 @@ public abstract class Identity {
         this.identity = identitier;
     }
 
-    public String getIdentitier() {
+    public String getIdentity() {
         return identity;
     }
 
-    public void setIdentitier(String identitier) {
-        this.identity = identitier;
+    public String getId() {
+        return identity;
     }
 
-    public ObjectId getRasperryPiId() {
-        return _id;
-    }
-
-    public void setId(ObjectId _id) {
-        this._id = _id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Identity identity = (Identity) o;
+        return Objects.equals(identity, identity.identity);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.identity);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Identity other = (Identity) obj;
-        if (!Objects.equals(this.identity, other.identity)) {
-            return false;
-        }
-        return true;
+        return Objects.hash(identity);
     }
 
     @Override
     public String toString() {
-        return "Identity{" + "identitier=" + identity + "}";
+        return this.getClass().getSimpleName()
+                + "[id=" + identity.substring(0, 8) + "...]";
     }
-
 }

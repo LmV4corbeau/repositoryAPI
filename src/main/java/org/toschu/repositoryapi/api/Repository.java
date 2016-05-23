@@ -27,7 +27,7 @@ public interface Repository<T extends Identity> {
     default Optional<T> get(String id) {
         return get()
                 .stream()
-                .filter(entity -> entity.getIdentitier().equals(id))
+                .filter(entity -> entity.getIdentity().equals(id))
                 .findAny();
     }
 
@@ -61,7 +61,7 @@ public interface Repository<T extends Identity> {
     }
 
     default void remove(String id) {
-        remove(entity -> entity.getIdentitier().equals(id)); // predicate to match the id
+        remove(entity -> entity.getIdentity().equals(id)); // predicate to match the id
     }
 
     default void remove(Predicate<T> predicate) {

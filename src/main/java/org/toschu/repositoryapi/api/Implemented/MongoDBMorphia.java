@@ -46,7 +46,8 @@ public class MongoDBMorphia<T extends Identity> implements Repository<T> {
      * @param morphia
      * @param databaseName
      */
-    public MongoDBMorphia(Class<T> type, MongoClient mongoClient, Morphia morphia, String databaseName) {
+    public MongoDBMorphia(Class<T> type, MongoClient mongoClient,
+            Morphia morphia, String databaseName) {
         this.type = type;
         this.mongoClient = mongoClient;
         this.morphia = morphia;
