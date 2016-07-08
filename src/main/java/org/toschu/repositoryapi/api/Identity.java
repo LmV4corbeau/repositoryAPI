@@ -7,6 +7,8 @@ package org.toschu.repositoryapi.api;
 
 import java.util.Objects;
 import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Id;
 
@@ -20,7 +22,7 @@ import javax.persistence.Id;
 public abstract class Identity {
 
     @Id
-    private final String identity;
+    private String identity;
 
     public Identity() {
         this.identity = UUID.randomUUID().toString();
@@ -34,9 +36,10 @@ public abstract class Identity {
         return identity;
     }
 
-    public String getId() {
-        return identity;
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
+
 
     @Override
     public boolean equals(Object o) {
