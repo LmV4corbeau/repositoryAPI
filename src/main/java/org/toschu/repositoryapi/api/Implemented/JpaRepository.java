@@ -128,9 +128,9 @@ public class JpaRepository<T extends Identity> implements Repository<T> {
 
     protected <R> R runInTransaction(Function<EntityManager, R> function) {
         return run(entityManager -> {
-            entityManager.getTransaction().begin();
-            final R result = function.apply(entityManager);
-            entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+                final R result = function.apply(entityManager);
+                entityManager.getTransaction().commit();
             return result;
         });
     }

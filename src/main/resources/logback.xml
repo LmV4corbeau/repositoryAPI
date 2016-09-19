@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="30 seconds">
-    
+    <!--
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>UTF-8</charset>
@@ -22,7 +22,6 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
-    <!--
     <appender name="HTML" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <charset>UTF-8</charset>
@@ -61,13 +60,13 @@
         </appender>
     -->
     <root level="DEBUG">
-        
+
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>        
+        <appender-ref ref="FILE"/>
         <!--
-        <appender-ref ref="HTML"/>
-        <appender-ref ref="SYSLOG"/>
-        <appender-ref ref="DB"/>
-        -->
+                <appender-ref ref="HTML"/>
+                <appender-ref ref="SYSLOG"/>
+                <appender-ref ref="DB"/>
+                -->
     </root>
 </configuration>
