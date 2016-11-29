@@ -5,12 +5,9 @@
  */
 package org.toschu.repositoryapi.api;
 
-import java.util.Objects;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import java.util.UUID;
 
 /**
  * Identity class. Every Class how want's to stored with repositoringApi has zu
@@ -43,24 +40,23 @@ public abstract class Identity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Identity identity = (Identity) o;
-        return Objects.equals(identity, identity.identity);
+        if (this == o) return true;
+        if (!(o instanceof Identity)) return false;
+
+        Identity identity1 = (Identity) o;
+
+        return getIdentity().equals(identity1.getIdentity());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identity);
+        return getIdentity().hashCode();
     }
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName()
-                + "[id=" + identity.substring(0, 8) + "...]";
+        return "Identity{" +
+                "identity='" + identity + '\'' +
+                '}';
     }
 }

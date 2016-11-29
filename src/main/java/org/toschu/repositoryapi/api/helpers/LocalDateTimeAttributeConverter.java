@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * Created by toschu on 07.10.16.
  */
-@Converter(autoApply = true)
+@Converter
 public class LocalDateTimeAttributeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
 
     @Override
